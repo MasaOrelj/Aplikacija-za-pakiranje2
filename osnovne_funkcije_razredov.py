@@ -37,30 +37,50 @@ class Popotnik:
     def odstotek_spakiranja(self, potovanje):
         self.odstotek_spakiranja(potovanje)
     
+
     def v_slovar(self):
-        vsa_potovanja = []
-        for potovanje in self.potovanja:
-            vsa_potovanja.append(potovanje.v_slovar())
-        if self.trenutno_potovanje:
-            trenutno = self.potovanja.index(self.trenutno_potovanje)
-        else:
-            trenutno = None
         return {
-            'potovanja': vsa_potovanja,
-            'trenutno_potovanje': trenutno
+            "potovanja": [potovanje.v_slovar() for potovanje in self.potovanja],
+            "trenutno_potovanje": self.potovanja.index(self.trenutno_potovanje)
+            if self.trenutno_potovanje
+            else None,
         }
+
+    #def v_slovar(self):
+    #    vsa_potovanja = []
+    #    for potovanje in self.potovanja:
+    #        vsa_potovanja.append(potovanje.v_slovar())
+    #    if self.trenutno_potovanje:
+    #        trenutno = self.potovanja.index(self.trenutno_potovanje)
+    #    else:
+    #        trenutno = None
+    #    return {
+    #        'potovanja': vsa_potovanja,
+    #        'trenutno_potovanje': trenutno
+    #    }
+    
 
     @staticmethod
     def iz_slovarja(slovar):
         popotnik = Popotnik()
-        popotnikova_potovanja = []
-        for potovanje_v_slovarju in slovar['potovanja']:
-            popotnikova_potovanja.append(Potovanje.iz_slovarja(potovanje_v_slovarju))
-        
-        popotnik.potovanja = popotnikova_potovanja
-        if slovar['trenutno_potovanje'] != None:
-            popotnik.trenutno_potovanje = popotnik.potovanja[slovar['trenutno_potovanje']]
+        popotnik.potovanja = [
+            Potovanje.iz_slovarja(sl_potovanje) for sl_potovanje in slovar["potovanja"]
+        ]
+        if slovar["trenutno_potovanje"] is not None:
+            popotnik.trenutno_potovanje = popotnik.spiski[slovar["trenutno_potovanje"]]
         return popotnik
+
+    #@staticmethod
+    #def iz_slovarja(slovar):
+    #    popotnik = Popotnik()
+    #    popotnikova_potovanja = []
+    #    for potovanje_v_slovarju in slovar['potovanja']:
+    #        popotnikova_potovanja.append(Potovanje.iz_slovarja(potovanje_v_slovarju))
+    #    
+    #    popotnik.potovanja = popotnikova_potovanja
+    #    if slovar['trenutno_potovanje'] != None:
+    #        popotnik.trenutno_potovanje = popotnik.potovanja[slovar['trenutno_potovanje']]
+    #    return popotnik
 
     def shrani_podatke_v_datoteko(self, datoteka):
         with open(datoteka, 'w', encoding='utf-8') as file:
@@ -118,20 +138,10 @@ class Potovanje:
             odstotek = round(nezaokrozen, 1)
         return odstotek
 
-    #def odstotek_spakiranja_podpredmetov(self):
-    #    stevilo_vseh_podpredmetov = len(self.seznam_podpredmetov)
-    #    stevilo_spakiranih_podpredmetov = 0
-    #    for podpredmet in self.seznam_podpredmetov:
-    #        if podpredmet.spakirano == True:
-    #            stevilo_spakiranih_podpredmetov += 1
-    #    odstotek = (stevilo_spakiranih_podpredmetov / stevilo_vseh_podpredmetov) * 100
-    #    return round(odstotek, 1)
-
     def v_slovar(self):
         ime = self.ime
-        seznam_predmetov = []
-        for predmet in self.seznam_predmetov:
-            seznam_predmetov.append(predmet.v_slovar())
+        seznam_predmetov = [predmet.v_slovar() for predmet in self.seznam_predmetov]
+        []
         if self.trenutni_predmet:
             trenutni_predmet = self.seznam_predmetov.index(self.trenutni_predmet)
         else:
@@ -145,13 +155,8 @@ class Potovanje:
 
     @staticmethod
     def iz_slovarja(slovar):
-        potovanje = Potovanje(slovar['ime'])
-
-        seznam = []
-        for predmet_v_slovarju in slovar['seznam_predmetov']:
-            seznam.append(Predmet.iz_slovarja(predmet_v_slovarju))
-
-        potovanje.seznam_predmetov = seznam
+        seznam = [Predmet.iz_slovarja(sl_predmet) for sl_predmet in slovar["seznam_predmetov"]]
+        potovanje = Potovanje(slovar['ime'], seznam)       
         return potovanje
 
 
@@ -174,20 +179,20 @@ class Smucanje(Potovanje):
 
 
 class Predmet:
-    def __init__(self, ime):
+    def __init__(self, ime, spakirano = False, zadnjaminuta = False):
         self.ime = ime
-        self.spakirano = False
-        self.zadnjaminuta = False
+        self.spakirano = spakirano
+        self.zadnjaminuta = spakirano
         self.seznam_podpredmetov = []
         
     def __repr__(self):
         return self.ime
 
     def spakiraj_predmet(self):
-        self.spakirano = True
+        self.spakirano = not self.spakirano
 
     def spakiraj_predmet_zadnjo_minuto(self):
-        self.zadnjaminuta = True
+        self.zadnjaminuta = not self.zadnjaminuta
 
     def dodaj_podpredmet(self, podpredmet):
         self.seznam_podpredmetov.append(podpredmet)
@@ -210,44 +215,36 @@ class Predmet:
         spakirano = self.spakirano
         spakirano_zadnjo_minuto = self.zadnjaminuta
 
-        seznam = []
-        for podpredmet in self.seznam_podpredmetov:
-            seznam.append(podpredmet)
+        seznam = [podpredmet.v_slovar() for podpredmet in self.seznam_podpredmetov],
 
         return {
             'ime': ime,
             'spakirano': spakirano,
             'spakirano_zadnjo_minuto': spakirano_zadnjo_minuto,
-            'seznam_podpredmetov': seznam
+            'seznam_podpredmetov': seznam,
         }
 
     @staticmethod
     def iz_slovarja(slovar):
-        predmet = Predmet(slovar['ime'])
-
-        seznam = []
-        for podpredmet_v_slovarju in slovar['seznam_podpredmetov']:
-            seznam.append(Podpredmet.iz_slovarja(podpredmet_v_slovarju))
-        predmet.seznam_podpredmetov = seznam
-
-        predmet.spakirano = slovar['spakirano']
-        predmet.zadnjaminuta = slovar['spakirano_zadnjo_minuto']
-
+        predmet = Predmet(slovar['ime'], slovar['spakirano'], slovar['spakirano_zadnjo_minuto'],)
+        
+        predmet.seznam_podpredmetov = [
+            Podpredmet.iz_slovarja(sl_podpredmet) for sl_podpredmet in slovar["seznam_podpredmetov"]
+        ]
         return predmet
-
-
+        
 
 class Podpredmet:
-    def __init__(self, ime):
+    def __init__(self, ime, spakirano = False, zadnjaminuta = False):
         self.ime = ime
-        self.spakirano = False
-        self.zadnjaminuta = False
+        self.spakirano = spakirano
+        self.zadnjaminuta = zadnjaminuta
 
     def spakiraj_podpredmet(self):
-        self.spakirano = True
+        self.spakirano = not self.spakirano
 
     def spakiraj_podpredmet_zadnjo_minuto(self):
-        self.zadnjaminuta = True
+        self.zadnjaminuta = not self.zadnjaminuta
 
     
     def v_slovar(self):
@@ -257,15 +254,17 @@ class Podpredmet:
         return {
             'ime': ime,
             'spakirano': spakirano,
-            'spakirano_zadnjo_minuto' : spakirano_zadnjo_minuto
+            'spakirano_zadnjo_minuto': spakirano_zadnjo_minuto
         }
 
     @staticmethod
     def iz_slovarja(slovar):
-        podpredmet = Podpredmet(slovar['ime'])
-        podpredmet.spakirano = slovar['spakirano']
-        podpredmet.zadnjaminuta = slovar['spakirano_zadnjo_minuto']
-        return podpredmet
+        return Podpredmet(
+            slovar["ime"],
+            slovar["spakirano"],
+            slovar["spakirano_zadnjo_minuto"]
+            )
+        
 
 
 def preberi_datoteko(ime):
