@@ -259,11 +259,8 @@ class Podpredmet:
 
     @staticmethod
     def iz_slovarja(slovar):
-        return Podpredmet(
-            slovar['ime'],
-            slovar['spakirano'],
-            slovar['spakirano_zadnjo_minuto'],
-            )
+        Podpredmet(slovar['ime'], slovar['spakirano'], slovar['spakirano_zadnjo_minuto'],)
+        return Podpredmet
         
 
 
