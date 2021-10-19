@@ -45,19 +45,6 @@ class Popotnik:
             if self.trenutno_potovanje
             else None,
         }
-
-    #def v_slovar(self):
-    #    vsa_potovanja = []
-    #    for potovanje in self.potovanja:
-    #        vsa_potovanja.append(potovanje.v_slovar())
-    #    if self.trenutno_potovanje:
-    #        trenutno = self.potovanja.index(self.trenutno_potovanje)
-    #    else:
-    #        trenutno = None
-    #    return {
-    #        'potovanja': vsa_potovanja,
-    #        'trenutno_potovanje': trenutno
-    #    }
     
 
     @staticmethod
@@ -67,7 +54,7 @@ class Popotnik:
             Potovanje.iz_slovarja(sl_potovanje) for sl_potovanje in slovar["potovanja"]
         ]
         if slovar["trenutno_potovanje"] is not None:
-            popotnik.trenutno_potovanje = popotnik.spiski[slovar["trenutno_potovanje"]]
+            popotnik.trenutno_potovanje = popotnik.potovanja[slovar["trenutno_potovanje"]]
         return popotnik
 
     #@staticmethod
@@ -182,7 +169,7 @@ class Predmet:
     def __init__(self, ime, spakirano = False, zadnjaminuta = False):
         self.ime = ime
         self.spakirano = spakirano
-        self.zadnjaminuta = spakirano
+        self.zadnjaminuta = zadnjaminuta
         self.seznam_podpredmetov = []
         
     def __repr__(self):
@@ -258,9 +245,18 @@ class Podpredmet:
         }
 
     @staticmethod
-    def iz_slovarja(slovar):
-        Podpredmet(slovar['ime'], slovar['spakirano'], slovar['spakirano_zadnjo_minuto'],)
-        return Podpredmet
+    def iz_slovarja(seznam_slovarjev):
+        for podpredmet in seznam_slovarjev:
+            Podpredmet(podpredmet['ime'], podpredmet['spakirano'], podpredmet['spakirano_zadnjo_minuto'],)
+            return Podpredmet
+
+    #@staticmethod
+    #def iz_slovarja(slovar):
+    #    return Podpredmet(
+    #        slovar['ime'],
+    #        slovar['spakirano'],
+    #        slovar['spakirano_zadnjo_minuto'],
+    #    )
         
 
 
@@ -269,4 +265,4 @@ def preberi_datoteko(ime):
         seznam_predmetov = []
         for i in datoteka.readline().split(','):
             seznam_predmetov.append(Predmet(i))
-        return seznam_predmetov    
+        return seznam_predmetov
