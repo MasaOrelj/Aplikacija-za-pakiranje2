@@ -215,9 +215,12 @@ class Predmet:
     def iz_slovarja(slovar):
         predmet = Predmet(slovar['ime'], slovar['spakirano'], slovar['spakirano_zadnjo_minuto'],)
         
-        predmet.seznam_podpredmetov = [
-            Podpredmet.iz_slovarja(sl_podpredmet) for sl_podpredmet in slovar["seznam_podpredmetov"]
-        ]
+        if slovar['seznam_podpredmetov'] == [[]]:
+            predmet.seznam_podpredmetov = []
+        else:
+            predmet.seznam_podpredmetov = [
+                Podpredmet.iz_slovarja(sl_podpredmet) for sl_podpredmet in slovar["seznam_podpredmetov"]
+            ]
         return predmet
         
 
