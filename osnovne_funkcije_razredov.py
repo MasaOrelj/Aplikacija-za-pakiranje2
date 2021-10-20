@@ -247,8 +247,8 @@ class Podpredmet:
     @staticmethod
     def iz_slovarja(seznam_slovarjev):
         for podpredmet in seznam_slovarjev:
-            Podpredmet(podpredmet['ime'], podpredmet['spakirano'], podpredmet['spakirano_zadnjo_minuto'],)
-            return Podpredmet
+            return Podpredmet(podpredmet['ime'], podpredmet['spakirano'], podpredmet['spakirano_zadnjo_minuto'],)
+            
 
     #@staticmethod
     #def iz_slovarja(slovar):

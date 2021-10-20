@@ -171,7 +171,7 @@ def prikazi_trenutni_seznam_predmetov():
                     print (f'> {prikaz_predmeta(predmet)}')
             else:
                 print (f'- {prikaz_predmeta(predmet)}')
-                for podpredmet in moj_model.trenutno_potovanje.trenutni_predmet.seznam_podpredmetov:
+                for podpredmet in predmet.seznam_podpredmetov:
                     if not podpredmet.spakirano:
                         print (f'    + {prikaz_podpredmeta(podpredmet)}')
                     else:
@@ -281,7 +281,7 @@ def spakiraj_podpredmet_zadnjo_minuto():
         print (f'Izbranega ukaza ni mogoče izvesti, saj v tej skupini nimate dodanega še nobenega predmeta.')
     else:
         podpredmet = izberi_podpredmet(moj_model)
-        podpredmet.spakiraj_podpredmet_zadnjo_minuto(podpredmet)
+        podpredmet.spakiraj_podpredmet_zadnjo_minuto()
 
 
 tekstovni_vmesnik()
