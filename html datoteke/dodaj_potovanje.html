@@ -1,0 +1,21 @@
+%rebase('base.html')
+
+<form method="POST">
+    <div class="field">
+        <label class="label">Ime novega potovanja</label>
+        <div class="control has-icons-left has-icons-right">
+            <input class="input is-medium is-focused" type="text" placeholder="Novo ime" value="{{polja.get('ime', '')}}">
+            <span class="icon is-left">
+                <i class="fas fa-keyboard"></i>
+            </span>
+            <span class="icon is-right">
+                <i class="fas fa-check"></i>
+            </span>
+        </div>
+        <p class="help is-success">Ime je na voljo!</p>
+        % if "Ime" in napake:
+        <p class="help is-danger">{{napake["ime"]}}</p>
+        % end
+    </div>
+</form>
+  
