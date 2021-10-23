@@ -43,21 +43,21 @@ def dodaj_podpredmet():
     bottle.redirect("/")
 
 @bottle.get("/dodaj-novo-potovanje/")
-def dodaj_spisek_get():
+def dodaj_potovanje_get():
     return bottle.template("dodaj_potovanje.html", napake={}, polja={})
 
 
 @bottle.post("/dodaj-novo-potovanje/")
-def dodaj_spisek_post():
+def dodaj_potovanje_post():
     ime = bottle.request.forms.getunicode("ime")
     napake = {}
     polja = {"ime": ime}
-    if ime == "":
+    if not ime:
         napake['ime'] = 'Ime potovanja ne more biti prazno.'
     for potovanje in moj_model.potovanja:
         if potovanje.ime == ime:
             napake['ime'] = 'Izbrano ime je že zasedeno.'
-    if napake != {}:
+    if napake:
         return bottle.template("dodaj_spisek.html", napake=napake, polja=polja)
     else:
         potovanje = Potovanje(ime)
