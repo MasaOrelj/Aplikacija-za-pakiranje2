@@ -17,8 +17,6 @@ def osnovna_stran():
         potovanja = moj_model.potovanja,
         trenutno_potovanje = moj_model.trenutno_potovanje,
         trenutni_predmet = moj_model.trenutno_potovanje.trenutni_predmet,
-        podpremdeti = moj_model.trenutno_potovanje.predmet.seznam_podpredmetov,
-        odstotek_potovanje = moj_model.potovanje.odstotek_spakiranja
     )
 
 @bottle.post("/dodaj-predmet/")
@@ -109,6 +107,8 @@ def zamenjaj_trenutni_predmet():
 def error_404(error):
     return "Ta stran ne obstaja!"
 
+
+bottle.run(reloader=True, debug=True)
 
 
 
