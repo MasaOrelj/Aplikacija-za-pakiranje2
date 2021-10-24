@@ -16,7 +16,7 @@ def osnovna_stran():
         predmeti = moj_model.trenutno_potovanje.seznam_predmetov if moj_model.trenutno_potovanje else [],
         potovanja = moj_model.potovanja,
         trenutno_potovanje = moj_model.trenutno_potovanje,
-        trenutni_predmet = moj_model.trenutno_potovanje.trenutni_predmet,
+        trenutni_predmet = moj_model.trenutno_potovanje.trenutni_predmet
     )
 
 @bottle.post("/dodaj-predmet/")
@@ -42,26 +42,16 @@ def dodaj_podpredmet():
 
 @bottle.get("/dodaj-novo-potovanje/")
 def dodaj_potovanje_get():
-    return bottle.template("dodaj_potovanje.html", napake={}, polja={})
+    return bottle.template("dodaj_potovanje.html")
 
 
 @bottle.post("/dodaj-novo-potovanje/")
 def dodaj_potovanje_post():
     ime = bottle.request.forms.getunicode("ime")
-    napake = {}
-    polja = {"ime": ime}
-    if not ime:
-        napake['ime'] = 'Ime potovanja ne more biti prazno.'
-    for potovanje in moj_model.potovanja:
-        if potovanje.ime == ime:
-            napake['ime'] = 'Izbrano ime je že zasedeno.'
-    if napake:
-        return bottle.template("dodaj_spisek.html", napake=napake, polja=polja)
-    else:
-        potovanje = Potovanje(ime)
-        moj_model.dodaj_potovanje(potovanje)
-        moj_model.shrani_podatke_v_datoteko(DATOTEKA_ZA_SHRANJEVANJE)
-        bottle.redirect("/")
+    potovanje = Potovanje(ime)
+    moj_model.dodaj_potovanje(potovanje)
+    moj_model.shrani_podatke_v_datoteko(DATOTEKA_ZA_SHRANJEVANJE)
+    bottle.redirect("/")
 
 
 
@@ -73,8 +63,8 @@ def spakiraj_predmet():
     moj_model.shrani_podatke_v_datoteko(DATOTEKA_ZA_SHRANJEVANJE)
     bottle.redirect("/")
 
-@bottle.post("/zamenjaj-spakirano-predmeta/")
-def spakiraj_predmet():
+@bottle.post("/zamenjaj-spakirano-podpredmeta/")
+def spakiraj_podpredmet():
     indeks = bottle.request.forms.getunicode("indeks")
     podpredmet = moj_model.trenutno_potovanje.trenutni_predmet.seznam_podpredmetov[int(indeks)]
     podpredmet.spakiraj_podpredmet()

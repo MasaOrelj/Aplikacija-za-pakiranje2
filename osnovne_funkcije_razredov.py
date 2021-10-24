@@ -80,6 +80,15 @@ class Popotnik:
             slovar = json.load(file)
             return Popotnik.iz_slovarja(slovar)
 
+    def preveri_novo_ime(self, ime):
+        napake = {}
+        if not ime:
+            napake['ime'] = 'Ime ne more biti prazno.'
+        for potovanje in self.potovanja:
+            if ime == potovanje.ime:
+                napake['ime'] = 'Ime je že zasedeno.'
+        return napake
+
 
 
 class Potovanje:
@@ -119,7 +128,7 @@ class Potovanje:
                         stevilo_spakiranih_predmetov += 1
         
         if stevilo_vseh_predmetov == 0:
-            odstotek = 0
+            odstotek = 0.0
         else:
             nezaokrozen = (stevilo_spakiranih_predmetov / stevilo_vseh_predmetov) * 100
             odstotek = round(nezaokrozen, 1)
