@@ -186,9 +186,13 @@ class Predmet:
 
     def spakiraj_predmet(self):
         self.spakirano = not self.spakirano
+        if self.spakirano == True and self.zadnjaminuta == True:
+            self.zadnjaminuta == False
 
     def spakiraj_predmet_zadnjo_minuto(self):
         self.zadnjaminuta = not self.zadnjaminuta
+        if self.zadnjaminuta == True and self.spakirano == True:
+            self.spakirano = False
 
     def dodaj_podpredmet(self, podpredmet):
         self.seznam_podpredmetov.append(podpredmet)
@@ -241,9 +245,13 @@ class Podpredmet:
 
     def spakiraj_podpredmet(self):
         self.spakirano = not self.spakirano
+        if self.spakirano == True and self.zadnjaminuta == True:
+            self.zadnjaminuta == False
 
     def spakiraj_podpredmet_zadnjo_minuto(self):
         self.zadnjaminuta = not self.zadnjaminuta
+        if self.zadnjaminuta == True and self.spakirano == True:
+            self.spakirano = False
 
     
     def v_slovar(self):

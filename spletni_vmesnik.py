@@ -55,18 +55,31 @@ def dodaj_potovanje_post():
 
 
 
-@bottle.post("/zamenjaj-spakirano-predmeta/")
-def spakiraj_predmet():
+@bottle.post("/zamenjaj-stanje-predmeta/")
+def stanje_predmeta():
     indeks = bottle.request.forms.getunicode("indeks")
     predmet = moj_model.trenutno_potovanje.seznam_predmetov[int(indeks)]
-    predmet.spakiraj_predmet()
+    if predmet.spakirano == False and predmet.zadnjaminuta == False:
+        predmet.spakiraj_predmet()
+    elif predmet.spakirano == True:
+        predmet.spakiraj_predmet_zadnjo_minuto()
+    elif predmet.zadnjaminuta == True:
+        predmet.spakiraj_predmet_zadnjo_minuto()
+
     moj_model.shrani_podatke_v_datoteko(DATOTEKA_ZA_SHRANJEVANJE)
     bottle.redirect("/")
 
-@bottle.post("/zamenjaj-spakirano-podpredmeta/")
-def spakiraj_podpredmet():
+@bottle.post("/zamenjaj-stanje-podpredmeta/")
+def stanje_podpredmeta():
     indeks = bottle.request.forms.getunicode("indeks")
     podpredmet = moj_model.trenutno_potovanje.trenutni_predmet.seznam_podpredmetov[int(indeks)]
+    if podpredmet.spakirano == False and podpredmet.zadnjaminuta == False:
+        podpredmet.spakiraj_predmet()
+    elif podpredmet.spakirano == True:
+        podpredmet.spakiraj_predmet_zadnjo_minuto()
+    elif podpredmet.zadnjaminuta == True:
+        podpredmet.spakiraj_predmet_zadnjo_minuto()
+
     podpredmet.spakiraj_podpredmet()
     moj_model.shrani_podatke_v_datoteko(DATOTEKA_ZA_SHRANJEVANJE)
     bottle.redirect("/")
