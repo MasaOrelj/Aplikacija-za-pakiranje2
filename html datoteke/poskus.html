@@ -162,34 +162,3 @@
 </body>
 
 </html>
-
-
-<form method="POST" action="/zamenjaj-stanje-predmeta/">
-    <input type="hidden" name="indeks" value="{{indeks}}">
-    <button class="button is-white">
-        <span class="icon is-small">
-            % if predmet.spakirano:
-            <i class="far fa-check-circle" style="color:green"></i>
-            % elif predmet.zadnjaminuta:
-            <i class="fas fa-exclamation-circle" style="color:red"></i>
-            % else:
-            <i class="far fa-circle" style="color:grey"></i>
-            % end
-        </span>
-    </button>
-</form>
-
-<form method="POST" action="/zamenjaj-stanje-podpredmeta/">
-    <input type="hidden" name="indeks" value="{{indeks}}">
-    <button class="button is-white">
-        <span class="icon is-small">
-            % if podpredmet.spakirano:
-            <i class="far fa-check-circle" style="color:green"></i>
-            % elif podpredmet.zadnjaminuta:
-            <i class="fas fa-exclamation-circle" style="color:red"></i>
-            % else:
-            <i class="far fa-circle" style="color:grey"></i>
-            % end
-        </span>
-    </button>
-</form>
