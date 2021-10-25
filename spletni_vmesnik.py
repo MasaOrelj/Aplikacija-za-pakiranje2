@@ -12,11 +12,11 @@ except FileNotFoundError:
 @bottle.get("/")
 def osnovna_stran():
     return bottle.template(
-        "osnovna_stran.html",
+        "poskus.html",
         predmeti = moj_model.trenutno_potovanje.seznam_predmetov if moj_model.trenutno_potovanje else [],
         potovanja = moj_model.potovanja,
         trenutno_potovanje = moj_model.trenutno_potovanje,
-        trenutni_predmet = moj_model.trenutno_potovanje.trenutni_predmet
+        trenutni_predmet = moj_model.trenutno_potovanje.trenutni_predmet if moj_model.trenutno_potovanje else None
     )
 
 @bottle.post("/dodaj-predmet/")
@@ -72,7 +72,7 @@ def stanje_predmeta():
 @bottle.post("/zamenjaj-stanje-podpredmeta/")
 def stanje_podpredmeta():
     indeks = bottle.request.forms.getunicode("indeks")
-    podpredmet = moj_model.trenutno_potovanje.trenutni_predmet.seznam_podpredmetov[int(indeks)]
+    podpredmet = moj_model.trenutno_potovanje.trenutni_predmet.seznam_podpredmetov
     if podpredmet.spakirano == False and podpredmet.zadnjaminuta == False:
         podpredmet.spakiraj_predmet()
     elif podpredmet.spakirano == True:

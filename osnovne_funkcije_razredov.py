@@ -57,22 +57,11 @@ class Popotnik:
             popotnik.trenutno_potovanje = popotnik.potovanja[slovar["trenutno_potovanje"]]
         return popotnik
 
-    #@staticmethod
-    #def iz_slovarja(slovar):
-    #    popotnik = Popotnik()
-    #    popotnikova_potovanja = []
-    #    for potovanje_v_slovarju in slovar['potovanja']:
-    #        popotnikova_potovanja.append(Potovanje.iz_slovarja(potovanje_v_slovarju))
-    #    
-    #    popotnik.potovanja = popotnikova_potovanja
-    #    if slovar['trenutno_potovanje'] != None:
-    #        popotnik.trenutno_potovanje = popotnik.potovanja[slovar['trenutno_potovanje']]
-    #    return popotnik
-
     def shrani_podatke_v_datoteko(self, datoteka):
         with open(datoteka, 'w', encoding='utf-8') as file:
             slovar = self.v_slovar()
             json.dump(slovar, file)
+            
     
     @staticmethod
     def preberi_podatke_iz_datoteke(datoteka):
