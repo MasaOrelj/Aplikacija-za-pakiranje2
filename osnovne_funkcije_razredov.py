@@ -169,6 +169,7 @@ class Predmet:
         self.spakirano = spakirano
         self.zadnjaminuta = zadnjaminuta
         self.seznam_podpredmetov = []
+        self.trenutni_podpredmet = None
         
     def __repr__(self):
         return self.ime
@@ -185,6 +186,7 @@ class Predmet:
 
     def dodaj_podpredmet(self, podpredmet):
         self.seznam_podpredmetov.append(podpredmet)
+        self.trenutni_podpredmet = podpredmet
 
     def izbrisi_podpredmet(self, podpredmet):
         self.seznam_podpredmetov.remove(podpredmet)
@@ -259,13 +261,7 @@ class Podpredmet:
             return Podpredmet(podpredmet['ime'], podpredmet['spakirano'], podpredmet['spakirano_zadnjo_minuto'],)
             
 
-    #@staticmethod
-    #def iz_slovarja(slovar):
-    #    return Podpredmet(
-    #        slovar['ime'],
-    #        slovar['spakirano'],
-    #        slovar['spakirano_zadnjo_minuto'],
-    #    )
+    
         
 
 

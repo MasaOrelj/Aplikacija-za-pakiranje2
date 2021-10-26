@@ -84,9 +84,8 @@ def stanje_podpredmeta_get():
 
 @bottle.post("/zamenjaj-stanje-podpredmeta/")
 def stanje_podpredmeta_post():
-    indeks = bottle.request.forms.getunicode("indeks")
     stevilo = bottle.request.forms.getunicode("stevilo")
-    podpredmet = moj_model.trenutno_potovanje.trenutni_predmet.seznam_podpredmetov[int(indeks)]
+    podpredmet = moj_model.trenutno_potovanje.trenutni_predmet.trenutni_podpredmet
     if int(stevilo) == 1 and podpredmet.spakirano == False:
         podpredmet.spakiraj_predmet()
        
@@ -119,6 +118,15 @@ def zamenjaj_trenutni_predmet():
     indeks = bottle.request.forms.getunicode("indeks")
     predmet = moj_model.trenutno_potovanje.seznam_predmetov[int(indeks)]
     moj_model.trenutno_potovanje.trenutni_predmet = predmet
+    moj_model.shrani_podatke_v_datoteko(DATOTEKA_ZA_SHRANJEVANJE)
+    bottle.redirect("/")
+
+@bottle.post("/zamenjaj-trenutni-podpredmet/")
+def zamenjaj_trenutni_predmet():
+    print(dict(bottle.request.forms))
+    indeks = bottle.request.forms.getunicode("indeks")
+    podpredmet = moj_model.trenutno_potovanje.trenutni_predmet.seznam_podpredmetov[int(indeks)]
+    moj_model.trenutno_potovanje.trenutni_predmet.trenutni_podpredmet = podpredmet
     moj_model.shrani_podatke_v_datoteko(DATOTEKA_ZA_SHRANJEVANJE)
     bottle.redirect("/")
 
