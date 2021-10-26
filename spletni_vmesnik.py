@@ -12,7 +12,7 @@ except FileNotFoundError:
 @bottle.get("/")
 def osnovna_stran():
     return bottle.template(
-        "poskus.html",
+        "osnovna_stran2.html",
         predmeti = moj_model.trenutno_potovanje.seznam_predmetov if moj_model.trenutno_potovanje else [],
         potovanja = moj_model.potovanja,
         trenutno_potovanje = moj_model.trenutno_potovanje,
@@ -53,18 +53,26 @@ def dodaj_potovanje_post():
     moj_model.shrani_podatke_v_datoteko(DATOTEKA_ZA_SHRANJEVANJE)
     bottle.redirect("/")
 
-
+@bottle.get("/zamenjaj-stanje-predmeta/")
+def stanje_predmeta_get():
+    return bottle.template("zamenjaj_stanje_predmeta.html")
 
 @bottle.post("/zamenjaj-stanje-predmeta/")
-def stanje_predmeta():
-    indeks = bottle.request.forms.getunicode("indeks")
-    predmet = moj_model.trenutno_potovanje.seznam_predmetov[int(indeks)]
-    if predmet.spakirano == False and predmet.zadnjaminuta == False:
+def stanje_predmeta_post():
+    stevilo = bottle.request.forms.getunicode("stevilo")
+    predmet = moj_model.trenutno_potovanje.trenutni_predmet
+    if int(stevilo) == 1 and predmet.spakirano == False:
         predmet.spakiraj_predmet()
-    elif predmet.spakirano == True:
+       
+    elif int(stevilo) == 2 and predmet.zadnjaminuta == False:
         predmet.spakiraj_predmet_zadnjo_minuto()
-    elif predmet.zadnjaminuta == True:
-        predmet.spakiraj_predmet_zadnjo_minuto()
+
+    elif int(stevilo) == 3:
+        if predmet.spakirano:
+            predmet.spakiraj_predmet()
+        elif predmet.zadnjaminuta:
+            predmet.spakiraj_predmet_zadnjo_minuto()
+    
 
     moj_model.shrani_podatke_v_datoteko(DATOTEKA_ZA_SHRANJEVANJE)
     bottle.redirect("/")
@@ -72,13 +80,13 @@ def stanje_predmeta():
 @bottle.post("/zamenjaj-stanje-podpredmeta/")
 def stanje_podpredmeta():
     indeks = bottle.request.forms.getunicode("indeks")
-    podpredmet = moj_model.trenutno_potovanje.trenutni_predmet.seznam_podpredmetov
+    podpredmet = moj_model.trenutno_potovanje.trenutni_predmet.seznam_podpredmetov[int(indeks)]
     if podpredmet.spakirano == False and podpredmet.zadnjaminuta == False:
-        podpredmet.spakiraj_predmet()
+        podpredmet.spakiraj_podpredmet()
     elif podpredmet.spakirano == True:
-        podpredmet.spakiraj_predmet_zadnjo_minuto()
+        podpredmet.spakiraj_podpredmet_zadnjo_minuto()
     elif podpredmet.zadnjaminuta == True:
-        podpredmet.spakiraj_predmet_zadnjo_minuto()
+        podpredmet.spakiraj_podpredmet_zadnjo_minuto()
 
     podpredmet.spakiraj_podpredmet()
     moj_model.shrani_podatke_v_datoteko(DATOTEKA_ZA_SHRANJEVANJE)
