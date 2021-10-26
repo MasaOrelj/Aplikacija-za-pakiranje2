@@ -77,18 +77,28 @@ def stanje_predmeta_post():
     moj_model.shrani_podatke_v_datoteko(DATOTEKA_ZA_SHRANJEVANJE)
     bottle.redirect("/")
 
-@bottle.post("/zamenjaj-stanje-podpredmeta/")
-def stanje_podpredmeta():
-    indeks = bottle.request.forms.getunicode("indeks")
-    podpredmet = moj_model.trenutno_potovanje.trenutni_predmet.seznam_podpredmetov[int(indeks)]
-    if podpredmet.spakirano == False and podpredmet.zadnjaminuta == False:
-        podpredmet.spakiraj_podpredmet()
-    elif podpredmet.spakirano == True:
-        podpredmet.spakiraj_podpredmet_zadnjo_minuto()
-    elif podpredmet.zadnjaminuta == True:
-        podpredmet.spakiraj_podpredmet_zadnjo_minuto()
+@bottle.get("/zamenjaj-stanje-podpredmeta/")
+def stanje_podpredmeta_get():
+    return bottle.template("zamenjaj_stanje_podpredmeta.html")
 
-    podpredmet.spakiraj_podpredmet()
+
+@bottle.post("/zamenjaj-stanje-podpredmeta/")
+def stanje_podpredmeta_post():
+    indeks = bottle.request.forms.getunicode("indeks")
+    stevilo = bottle.request.forms.getunicode("stevilo")
+    podpredmet = moj_model.trenutno_potovanje.trenutni_predmet.seznam_podpredmetov[int(indeks)]
+    if int(stevilo) == 1 and podpredmet.spakirano == False:
+        podpredmet.spakiraj_predmet()
+       
+    elif int(stevilo) == 2 and podpredmet.zadnjaminuta == False:
+        podpredmet.spakiraj_predmet_zadnjo_minuto()
+
+    elif int(stevilo) == 3:
+        if podpredmet.spakirano:
+            podpredmet.spakiraj_predmet()
+        elif podpredmet.zadnjaminuta:
+            podpredmet.spakiraj_predmet_zadnjo_minuto()
+    
     moj_model.shrani_podatke_v_datoteko(DATOTEKA_ZA_SHRANJEVANJE)
     bottle.redirect("/")
 
