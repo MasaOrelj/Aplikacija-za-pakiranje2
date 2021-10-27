@@ -70,23 +70,31 @@ def dodaj_predmet():
 
 @bottle.get("/zamenjaj-stanje-predmeta/")
 def stanje_predmeta_get():
-    return bottle.template("zamenjaj_stanje_predmeta.html")
+    return bottle.template("zamenjaj_stanje_predmeta.html", napake={})
 
 @bottle.post("/zamenjaj-stanje-predmeta/")
 def stanje_predmeta_post():
     stevilo = bottle.request.forms.getunicode("stevilo")
     predmet = moj_model.trenutno_potovanje.trenutni_predmet
-    if int(stevilo) == 1 and predmet.spakirano == False:
-        predmet.spakiraj_predmet()
-       
-    elif int(stevilo) == 2 and predmet.zadnjaminuta == False:
-        predmet.spakiraj_predmet_zadnjo_minuto()
+    napake = {}
+    if stevilo == "" or int(stevilo) not in [1,2,3]:
+        napake["stevilo"] = "Vpisati je potrebno število med 1 in 3."
 
-    elif int(stevilo) == 3:
-        if predmet.spakirano:
+    if "stevilo" in napake:
+        return bottle.template("zamenjaj_stanje_predmeta.html", napake=napake)
+    else:
+
+        if int(stevilo) == 1 and predmet.spakirano == False:
             predmet.spakiraj_predmet()
-        elif predmet.zadnjaminuta:
+           
+        elif int(stevilo) == 2 and predmet.zadnjaminuta == False:
             predmet.spakiraj_predmet_zadnjo_minuto()
+    
+        elif int(stevilo) == 3:
+            if predmet.spakirano:
+                predmet.spakiraj_predmet()
+            elif predmet.zadnjaminuta:
+                predmet.spakiraj_predmet_zadnjo_minuto()
     
     moj_model.shrani_podatke_v_datoteko(DATOTEKA_ZA_SHRANJEVANJE)
     bottle.redirect("/")
@@ -105,24 +113,33 @@ def zamenjaj_trenutni_predmet():
 
 @bottle.get("/dodaj-podpredmet/")
 def dodaj_podpredmet_get():
-    return bottle.template("dodaj_podpredmet.html")
+    return bottle.template("dodaj_podpredmet.html", napake={})
 
 @bottle.post("/dodaj-podpredmet/")
 def dodaj_podpredmet():
     ime = bottle.request.forms.getunicode("ime")
     stevilo = bottle.request.forms.getunicode("stevilo")
     podpredmet = Podpredmet(ime)
-    if int(stevilo) == 1 and podpredmet.spakirano == False:
-        podpredmet.spakiraj_podpredmet()
-       
-    elif int(stevilo) == 2 and podpredmet.zadnjaminuta == False:
-        podpredmet.spakiraj_podpredmet_zadnjo_minuto()
+    napake = {}
+    if stevilo == "" or int(stevilo) not in [1,2,3]:
+        napake["stevilo"] = "Vpisati je potrebno število med 1 in 3."
 
-    elif int(stevilo) == 3:
-        if podpredmet.spakirano:
+    if "stevilo" in napake:
+        return bottle.template("dodaj_podpredmet.html", napake=napake)
+
+    else:
+
+        if int(stevilo) == 1 and podpredmet.spakirano == False:
             podpredmet.spakiraj_podpredmet()
-        elif podpredmet.zadnjaminuta:
+           
+        elif int(stevilo) == 2 and podpredmet.zadnjaminuta == False:
             podpredmet.spakiraj_podpredmet_zadnjo_minuto()
+    
+        elif int(stevilo) == 3:
+            if podpredmet.spakirano:
+                podpredmet.spakiraj_podpredmet()
+            elif podpredmet.zadnjaminuta:
+                podpredmet.spakiraj_podpredmet_zadnjo_minuto()
 
     moj_model.dodaj_podpredmet(podpredmet)
     moj_model.shrani_podatke_v_datoteko(DATOTEKA_ZA_SHRANJEVANJE)
@@ -134,15 +151,25 @@ def izbrisi_podpredmet_get():
     return bottle.template("izbrisi_podpredmet.html", predmeti = moj_model.trenutno_potovanje.seznam_predmetov if moj_model.trenutno_potovanje else [],
         potovanja = moj_model.potovanja,
         trenutno_potovanje = moj_model.trenutno_potovanje,
-        trenutni_predmet = moj_model.trenutno_potovanje.trenutni_predmet if moj_model.trenutno_potovanje else None)
+        trenutni_predmet = moj_model.trenutno_potovanje.trenutni_predmet if moj_model.trenutno_potovanje else None, napake={})
 
 @bottle.post("/izbrisi-podpredmet/")
 def izbrisi_podpredmet_post():
-    indeks = bottle.request.forms.getunicode("stevilo")
-    podpredmet = moj_model.trenutno_potovanje.trenutni_predmet.seznam_podpredmetov[int(indeks)-1]
-    moj_model.izbrisi_podpredmet(podpredmet)
-    moj_model.shrani_podatke_v_datoteko(DATOTEKA_ZA_SHRANJEVANJE)
-    bottle.redirect("/")
+    stevilo = bottle.request.forms.getunicode("stevilo")
+    
+    dolzina = len(moj_model.trenutno_potovanje.trenutni_predmet.seznam_podpredmetov)
+    napake = {}
+    if stevilo == "" or int(stevilo) > dolzina or int(stevilo) < 1:
+        napake["stevilo"] = f"Vpisati je potrebno število med 1 in {dolzina}."
+
+    if "stevilo" in napake:
+        return bottle.template("izbrisi_podpredmet.html", napake=napake)
+
+    else:
+        podpredmet = moj_model.trenutno_potovanje.trenutni_predmet.seznam_podpredmetov[int(stevilo)-1]
+        moj_model.izbrisi_podpredmet(podpredmet)
+        moj_model.shrani_podatke_v_datoteko(DATOTEKA_ZA_SHRANJEVANJE)
+        bottle.redirect("/")
 
 
 
