@@ -77,6 +77,24 @@
                         </a>
                     </p>
                 </div>
+                <div class="level-item">
+                    <p class="control">
+                        % if trenutno_potovanje:
+                        <a class="button is-primary is-focused" href="/preimenuj-trenutno-potovanje/">
+                            Preimenuj trenutno potovanje&nbsp;
+                            <span class="icon-text">
+                                <i class="fas fa-file-signature" style="color: white"></i>
+                            </span>
+                        </a>
+                        % else:
+                        <button class="button" title="Disabled button" disabled>
+                            Preimenuj trenutno potovanje&nbsp;
+                            <span class="icon-text">
+                                <i class="fas fa-file-signature" style="color: white"></i>
+                            </span>
+                        </button>
+                    </p>
+                </div>
             </div>
         </nav>
 
@@ -152,26 +170,53 @@
 
                     % else:
                     <li>
-                        <div class="buttons">
+                        <div class="field">
                             
                             <button class="button is-inverted is-link is-selected" name="indeks" value="{{indeks}}">
                                     <strong>{{predmet.ime}}&nbsp;</strong>
                                     <span class="tag is-rounded"><strong>{{predmet.odstotek_spakiranja_podpredmetov()}}%</strong></span>
                             </button>
                         </div>
-                        <ul type="circle" style="color:darkslategrey">
+                        <div class="field ml-3">
+                            <a class="delete" href="/izbrisi-podpredmet/"></a>
+                            </div>
+                        <ul type="circle">
+                            
                         % for indeks, podpredmet in enumerate(predmet.seznam_podpredmetov):
                         <li>
-                            {{ podpredmet.ime }}
+                            % if podpredmet.spakirano:
+                                {{podpredmet.ime}}&nbsp;
+                                <span class="icon is-small">
+                                    <i class="far fa-check-circle" style="color:green"></i>
+                                </span>
+                            
+
+                            % elif podpredmet.zadnjaminuta:
+                                {{ podpredmet.ime }}&nbsp;
+                                <span class="icon is-small">
+                                    <i class="fas fa-exclamation-circle" style="color:red"></i>
+                                </span>
+
+                            % else:
+                                {{ podpredmet.ime}}&nbsp;
+                                <span class="icon is-small">
+                                    <i class="far fa-circle" style="color:grey"></i>
+                                </span>
+
+                            % end
+                            
                             
                         </li>
                         % end
+                        
                         <li>
+                            <div class="field mt-3">
                             <a class="button is-small is-focused" href="/dodaj-podpredmet/">
                                 <span class="icon-text">
                                     <i class="fas fa-plus" style="color:grey"></i>
                                 </span>
                             </a>
+                            </div>
                         </li>
                         </ul>
                     </li>
@@ -184,7 +229,7 @@
                     <div class="buttons">
                     % if predmet.spakirano:
                         <button class="button is-inverted is-success is-selected" name="indeks" value="{{indeks}}">
-                                {{predmet.ime}}
+                            {{predmet.ime}}
                         </button>
                     % elif predmet.zadnjaminuta:
                         <button class="button is-inverted is-danger is-selected" name="indeks" value="{{indeks}}">
@@ -201,16 +246,36 @@
 
                     % else:
                     <li>
-                    <div class="buttons">
+                    <div class="field">
                         <button class="button is-inverted is-link" name="indeks" value="{{indeks}}">
                             {{predmet.ime}}&nbsp;
                             <span class="tag is-rounded"><strong>{{predmet.odstotek_spakiranja_podpredmetov()}}%</strong></span>
                         </button>
                     </div>                            
-                    <ul type="circle" style="color:grey">
+                    <ul type="circle">
+                         
                         % for indeks, podpredmet in enumerate(predmet.seznam_podpredmetov):
                         <li>
-                            {{ podpredmet.ime }}
+                            % if podpredmet.spakirano:
+                                {{podpredmet.ime}}&nbsp;
+                                <span class="icon is-small">
+                                    <i class="far fa-check-circle" style="color:green"></i>
+                                </span>
+
+                            % elif podpredmet.zadnjaminuta:
+                                {{ podpredmet.ime }}&nbsp;
+                                <span class="icon is-small">
+                                    <i class="fas fa-exclamation-circle" style="color:red"></i>
+                                </span>
+
+                            % else:
+                                {{ podpredmet.ime}}&nbsp;
+                                <span class="icon is-small">
+                                    <i class="far fa-circle" style="color:grey"></i>
+                                </span>
+
+                            % end
+                            
                         </li>
                         % end
                     </ul>
@@ -235,22 +300,5 @@
 
 </html>
 
-<form method="POST" action="/zamenjaj-stanje-predmeta/">
-    <input type="hidden" name="indeks" value="{{indeks}}">
-    <button class="button is-white">
-        <span class="icon is-small">
-            % if predmet.spakirano:
-            <i class="far fa-check-circle" style="color:green"></i>
-            % elif predmet.zadnjaminuta:
-            <i class="fas fa-exclamation-circle" style="color:red"></i>
-            % else:
-            <i class="far fa-circle" style="color:grey"></i>
-            % end
-        </span>
-    </button>
-</form>
-<a class="button is-small is-white" href="/zamenjaj-stanje-predmeta">
-    <span class="icon-text">
-        <i class="fas fa-arrow-right" style="color:palevioletred"></i>
-    </span>
-</a>
+
+

@@ -39,38 +39,46 @@
     </nav>
     <section class="section">
         <form method="POST">
-            <div class="field mb-4">
-                <label class="label">
-                    <p class="has-text-grey">Stanje predmet</p>
-                </label>
-                <label class="label">
-                    <p class="has-text-grey">Izberite eno od naslednjih možnosti:    1-spakirano, 2-spakiraj zadnjo minuto, 3-nespakirano</p>
-                </label>
-                <div class="control has-icons-left has-icons-right">
-                    <input class="input is-medium is-focused" type="number" name="stevilo" placeholder="Število">
-                    <span class="icon is-left">
-                        <i class="fas fa-keyboard" style="color:grey"></i>
-                    </span>
-                    <span class="icon is-right">
-                        <i class="fas fa-check"></i>
-                    </span>
-                </div>
+        <div class="field">
+        <label class="label">
+            <p class="has-text-grey">Izberite številko predmeta, ki ga želiš izbrisati</p>
+        </label>
+        
+            <ol>
+                % for indeks, podpredmet in enumerate(trenutni_predmet.seznam_podpredmetov):
+                <li>
+                    {{podpredmet.ime}}
+                </li>
+                
+                % end
+        </div>
+        
+        <div class="control has-icons-left has-icons-right">
+            <input class="input is-medium is-focused" type="number" name="stevilo" placeholder="Število">
+            <span class="icon is-left">
+                <i class="fas fa-list-ol" style="color:grey"></i>
+            </span>
+            <span class="icon is-right">
+                <i class="fas fa-check"></i>
+            </span>
+        </div>
+
+
+    
+    <div class="field is-grouped">
+        <div class="control">
+            <div class="buttons">
+                <button class="button is-primary">Izbriši</button>
             </div>
-            <div class="field is-grouped">
-                <div class="control">
-                    <div class="buttons">
-                        <button class="button is-primary">Spremeni</button>
-                    </div>
-                </div>
-                <div class="control">
-                    <div class="buttons">
-                        <a class="button is-primary is-light" href="/">Prekliči</a>
-                    </div>
-                </div>
+        </div>
+        <div class="control">
+            <div class="buttons">
+                <a class="button is-primary is-light" href="/">Prekliči</a>
             </div>
-        </form>
+        </div>
+    </div>
+    </form>
     </section>
 </body>
 
 </html>
-
