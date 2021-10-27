@@ -46,7 +46,6 @@ class Popotnik:
             else None,
         }
     
-
     @staticmethod
     def iz_slovarja(slovar):
         popotnik = Popotnik()
@@ -57,26 +56,17 @@ class Popotnik:
             popotnik.trenutno_potovanje = popotnik.potovanja[slovar["trenutno_potovanje"]]
         return popotnik
 
+
     def shrani_podatke_v_datoteko(self, datoteka):
         with open(datoteka, 'w', encoding='utf-8') as file:
             slovar = self.v_slovar()
             json.dump(slovar, file)
             
-    
     @staticmethod
     def preberi_podatke_iz_datoteke(datoteka):
         with open(datoteka, encoding='utf-8') as file:
             slovar = json.load(file)
             return Popotnik.iz_slovarja(slovar)
-
-    def preveri_novo_ime(self, ime):
-        napake = {}
-        if not ime:
-            napake['ime'] = 'Ime ne more biti prazno.'
-        for potovanje in self.potovanja:
-            if ime == potovanje.ime:
-                napake['ime'] = 'Ime je že zasedeno.'
-        return napake
 
 
 
@@ -122,6 +112,7 @@ class Potovanje:
             nezaokrozen = (stevilo_spakiranih_predmetov / stevilo_vseh_predmetov) * 100
             odstotek = round(nezaokrozen, 1)
         return odstotek
+
 
     def v_slovar(self):
         ime = self.ime
@@ -169,7 +160,6 @@ class Predmet:
         self.spakirano = spakirano
         self.zadnjaminuta = zadnjaminuta
         self.seznam_podpredmetov = []
-        self.trenutni_podpredmet = None
         
     def __repr__(self):
         return self.ime
@@ -186,7 +176,7 @@ class Predmet:
 
     def dodaj_podpredmet(self, podpredmet):
         self.seznam_podpredmetov.append(podpredmet)
-        self.trenutni_podpredmet = podpredmet
+        
 
     def izbrisi_podpredmet(self, podpredmet):
         self.seznam_podpredmetov.remove(podpredmet)
@@ -228,6 +218,7 @@ class Predmet:
         return predmet
         
 
+
 class Podpredmet:
     def __init__(self, ime, spakirano = False, zadnjaminuta = False):
         self.ime = ime
@@ -260,9 +251,6 @@ class Podpredmet:
         for podpredmet in seznam_slovarjev:
             return Podpredmet(podpredmet['ime'], podpredmet['spakirano'], podpredmet['spakirano_zadnjo_minuto'],)
             
-
-    
-        
 
 
 def preberi_datoteko(ime):

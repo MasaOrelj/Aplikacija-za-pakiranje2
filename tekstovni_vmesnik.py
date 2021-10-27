@@ -78,8 +78,6 @@ def izberi_potovanje(popotnik):
         vse_izbire_potovanj.append(par)
     return izberi_ukaz(vse_izbire_potovanj)
 
-#        if isinstance(podkategorija, Podkategorija):
-
 def izberi_podpredmet(popotnik):
     vse_izbire_podpredmetov = []
     for podpredmet in popotnik.trenutno_potovanje.trenutni_predmet.seznam_podpredmetov:
@@ -159,7 +157,6 @@ def tekstovni_vmesnik():
             break
 
 
-
 def prikazi_trenutni_seznam_predmetov():
     if moj_model.trenutno_potovanje:
         print (f'{prikaz_potovanja(moj_model.trenutno_potovanje)}')
@@ -190,7 +187,6 @@ def izberi_trenutno_potovanje():
     trenutno = izberi_potovanje(moj_model)
     moj_model.trenutno_potovanje = trenutno
     prikazi_trenutni_seznam_predmetov()
-
 
 def dodaj_potovanje():
     print ('Vnesite ime novega potovanja.')
@@ -245,8 +241,6 @@ def spakiraj_predmet_zadnjo_minuto():
             predmet.spakiraj_predmet_zadnjo_minuto()
         else:
             print (f'Ukaza ni mogoče izvesti na predmetu, ki predstavlja skupino.')
-
-       
 
 def zamenjaj_trenutni_predmet():
     if moj_model.trenutno_potovanje.seznam_predmetov == []:
