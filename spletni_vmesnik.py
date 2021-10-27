@@ -163,7 +163,10 @@ def izbrisi_podpredmet_post():
         napake["stevilo"] = f"Vpisati je potrebno število med 1 in {dolzina}."
 
     if "stevilo" in napake:
-        return bottle.template("izbrisi_podpredmet.html", napake=napake)
+        return bottle.template("izbrisi_podpredmet.html", predmeti = moj_model.trenutno_potovanje.seznam_predmetov if moj_model.trenutno_potovanje else [],
+        potovanja = moj_model.potovanja,
+        trenutno_potovanje = moj_model.trenutno_potovanje,
+        trenutni_predmet = moj_model.trenutno_potovanje.trenutni_predmet if moj_model.trenutno_potovanje else None, napake=napake)
 
     else:
         podpredmet = moj_model.trenutno_potovanje.trenutni_predmet.seznam_podpredmetov[int(stevilo)-1]
