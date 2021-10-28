@@ -55,6 +55,9 @@
                         <i class="fas fa-check"></i>
                     </span>
                 </div>
+                % if "stevilo" in napake:
+                    <p class="help is-danger">{{ napake["stevilo"] }}</p>
+                % end
             </div>
             <div class="field is-grouped">
                 <div class="control">

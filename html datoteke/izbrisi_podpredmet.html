@@ -39,7 +39,7 @@
     </nav>
     <section class="section">
         <form method="POST">
-        <div class="field">
+        <div class="field mb-4">
         <label class="label">
             <p class="has-text-grey">Izberite številko predmeta, ki ga želiš izbrisati</p>
         </label>
@@ -61,11 +61,15 @@
             <span class="icon is-right">
                 <i class="fas fa-check"></i>
             </span>
+
+            % if "stevilo" in napake:
+                <p class="help is-danger">{{ napake["stevilo"] }}</p>
+            % end
         </div>
 
 
     
-    <div class="field is-grouped">
+    <div class="field is-grouped mt-4">
         <div class="control">
             <div class="buttons">
                 <button class="button is-primary">Izbriši</button>
