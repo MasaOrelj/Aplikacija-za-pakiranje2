@@ -31,6 +31,15 @@
                                 </span>
                                 <span><strong>GitHub</strong></span>
                             </a>
+                            <div class="buttons">
+                                % if uporabnisko_ime:
+                                <form method="POST" action="/odjava/">
+                                  <button class="button is-light is-primary">
+                                    Odjavi se
+                                  </button>
+                                </form>
+                                % end
+                              </div>
                         </div>
                     </div>    
                 </div>
