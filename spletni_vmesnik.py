@@ -1,5 +1,5 @@
 import bottle
-import os
+
 from osnovne_funkcije_razredov import Popotnik, Potovanje, Predmet, Podpredmet
 
 DATOTEKA_ZA_SHRANJEVANJE = 'popotnik.json'
