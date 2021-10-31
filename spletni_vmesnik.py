@@ -12,7 +12,7 @@ except FileNotFoundError:
 @bottle.get("/")
 def osnovna_stran():
     return bottle.template(
-        "osnovna_stran2.html",
+        "osnovna_stran.html",
         predmeti = moj_model.trenutno_potovanje.seznam_predmetov if moj_model.trenutno_potovanje else [],
         potovanja = moj_model.potovanja,
         trenutno_potovanje = moj_model.trenutno_potovanje,
